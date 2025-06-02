@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>火山温泉バイオーム 食物網</title>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<style>
+    body { margin: 0; font-family: sans-serif; }
+    #toolbar { padding: 10px; background: #eee; }
+    #cy { width: 100vw; height: calc(100vh - 50px); }
+    .info-box {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      font-size: 14px;
+      display: none;
+    }
+  
+  .node-icon {
+    background-color: red;
+    background-image: none;
+    background-fit: cover;
+    background-clip: content-box;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
+
+<svg style="display: none;">
+<symbol id="icon-nematode" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="currentColor" r="40"></circle>
+</symbol>
+<symbol id="icon-protozoa" viewbox="0 0 100 100">
+<ellipse cx="50" cy="50" fill="currentColor" rx="30" ry="40"></ellipse>
+</symbol>
+<symbol id="icon-cladocera" viewbox="0 0 100 100">
+<rect fill="currentColor" height="40" width="40" x="30" y="30"></rect>
+</symbol>
+<symbol id="icon-coccus" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="currentColor" r="30"></circle>
+</symbol>
+<symbol id="icon-yeast" viewbox="0 0 100 100">
+<circle cx="40" cy="50" fill="currentColor" r="20"></circle>
+<circle cx="60" cy="50" fill="currentColor" r="20"></circle>
+</symbol>
+<symbol id="icon-detritus" viewbox="0 0 100 100">
+<circle cx="30" cy="30" fill="currentColor" r="5"></circle>
+<circle cx="70" cy="70" fill="currentColor" r="5"></circle>
+<circle cx="50" cy="50" fill="currentColor" r="5"></circle>
+</symbol>
+<symbol id="icon-algae" viewbox="0 0 100 100">
+<path d="M50,90 Q55,60 50,30 Q45,10 50,10" fill="none" stroke="currentColor" stroke-width="10"></path>
+</symbol>
+</svg>
+</head>
+<body>
+<div id="toolbar">
+<label><input id="toggleLabel" type="checkbox"/> 和名表示</label>
+</div>
+<div id="cy"></div>
+<div class="info-box" id="infoBox"></div>
+<script>
+    const speciesInfo = {
+      "Thermophilic Nematoda": {
+        label_ja: "高温性線虫",
+        label_en: "Thermophilic Nematoda",
+        description: "高温環境に適応した線形動物で、細菌などを捕食する。",
+        link: "https://www.nps.gov/yell/learn/nature/thermophilic-bacteria.htm"
+      },
+      "Naegleria fowleri": {
+        label_ja: "ネグレリア",
+        label_en: "Naegleria fowleri",
+        description: "高温の淡水に生息するアメーバで、細菌を捕食する。稀に人に感染し、致命的な脳炎を引き起こす。",
+        link: "https://www.cdc.gov/naegleria/about/index.html"
+      },
+      "Acanthamoeba castellanii": {
+        label_ja: "アカントアメーバ",
+        label_en: "Acanthamoeba castellanii",
+        description: "自由生活性のアメーバで、細菌を捕食する。稀に人に感染し、角膜炎や脳炎を引き起こす。",
+        link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3284432/"
+      },
+      "Bodo thermophilus": {
+        label_ja: "ボド・テルモフィルス",
+        label_en: "Bodo thermophilus",
+        description: "高温環境に生息する鞭毛虫で、細菌を捕食する。",
+        link: "https://www.nps.gov/hosp/learn/thermophiles.htm"
+      }
+    };
+
+    fetch("volcanic_hotspring_foodweb.json")
+      .then(res => res.json())
+      .then(elements => {
+        const cy = cytoscape({
+          container: document.getElementById('cy'),
+          elements: elements,
+          style: [
+            {
+              selector: 'node',
+              style: {
+                'label': 'data(label)',
+                'text-valign': 'center',
+                'color': '#000',
+                
+              'background-opacity': 0,
+              'background-width': 40,
+              'background-height': 40,
+              'background-image': function(ele) {
+                const iconMap = {
+                  'Thermophilic Nematoda': '#icon-nematode',
+                  'Naegleria fowleri': '#icon-protozoa',
+                  'Acanthamoeba castellanii': '#icon-protozoa',
+                  'Bodo thermophilus': '#icon-protozoa',
+                  'Rotaria rotatoria': '#icon-cladocera',
+                  'Thermocyclops crassus': '#icon-protozoa',
+                  'Protozoa': '#icon-protozoa',
+                  'Bacteria spp.': '#icon-coccus',
+                  'Yeast-like cells': '#icon-yeast',
+                  'Detritus': '#icon-detritus',
+                  'Algae debris': '#icon-algae'
+                };
+                return `url(${iconMap[ele.id()]})`;
+              },
+              'background-color': 'red',
+
+                'width': 40,
+                'height': 40,
+                'font-size': 10
+              }
+            },
+            {
+              selector: 'edge',
+              style: {
+                'width': 2,
+                'line-color': '#999',
+                'target-arrow-color': '#333',
+                'target-arrow-shape': 'triangle',
+                'curve-style': 'bezier'
+              }
+            }
+          ],
+          layout: { name: 'cose', padding: 10 }
+        });
+
+        document.getElementById('toggleLabel').addEventListener('change', (e) => {
+          const showJapanese = e.target.checked;
+          cy.nodes().forEach(node => {
+            const info = speciesInfo[node.id()];
+            if (info) {
+              node.data('label', showJapanese ? info.label_ja : info.label_en);
+            }
+          });
+        });
+
+        cy.on('tap', 'node', evt => {
+          const node = evt.target;
+          const info = speciesInfo[node.id()];
+          if (info) {
+            const box = document.getElementById('infoBox');
+            box.innerHTML = `<strong>${info.label_ja} / ${info.label_en}</strong><br>${info.description}<br><a href="${info.link}" target="_blank">出典</a>`;
+            box.style.display = 'block';
+          }
+        });
+
+        cy.on('tap', event => {
+          if (event.target === cy) {
+            document.getElementById('infoBox').style.display = 'none';
+          }
+        });
+      });
+  </script>
+</body>
+</html>
