@@ -5,12 +5,8 @@
 <meta charset="utf-8"/>
 <title>火山温泉バイオーム 食物網</title>
 <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js">
-const BASE_SIZE = 40;
-
 function updateNodeIconSize() {
-  const zoom = cy.zoom();
-  const size = (zoom >= 1.0) ? BASE_SIZE : BASE_SIZE / zoom;
-
+  const size = 60;
   cy.nodes().forEach(node => {
     node.style({
       'background-width': `${size}px`,
@@ -256,12 +252,8 @@ updateNodeIconSize();
       });
     });
 
-const BASE_SIZE = 40;
-
 function updateNodeIconSize() {
-  const zoom = cy.zoom();
-  const size = (zoom >= 1.0) ? BASE_SIZE : BASE_SIZE / zoom;
-
+  const size = 60;
   cy.nodes().forEach(node => {
     node.style({
       'background-width': `${size}px`,
