@@ -165,5 +165,52 @@
       "source": "Algae debris",
       "target": "Detritus"
     }
+  },
+  {
+    "data": {
+      "id": "Polypedilum nubifer",
+      "label": "Polypedilum nubifer",
+      "group": "insect"
+    }
+  },
+  {
+    "data": {
+      "id": "Thermophilic Ostracoda",
+      "label": "Thermophilic Ostracoda",
+      "group": "bacteria",
+      "icon": "icon-bacillus"
+    }
+  },
+  {
+    "data": {
+      "id": "Thermus thermophilus",
+      "label": "Thermus thermophilus",
+      "group": "bacteria",
+      "icon": "icon-bacillus"
+    }
+  },
+  {
+    "data": {
+      "source": "Polypedilum nubifer",
+      "target": "Rotaria rotatoria"
+    }
+  },
+  {
+    "data": {
+      "source": "Thermophilic Ostracoda",
+      "target": "Detritus"
+    }
+  },
+  {
+    "data": {
+      "source": "Thermophilic Ostracoda",
+      "target": "Algae debris"
+    }
+  },
+  {
+    "data": {
+      "source": "Thermus thermophilus",
+      "target": "Detritus"
+    }
   }
 ]
