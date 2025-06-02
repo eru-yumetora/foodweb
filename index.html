@@ -1,11 +1,12 @@
 
 <!DOCTYPE html>
+
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>火山温泉バイオーム 食物網</title>
-  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
-  <style>
+<meta charset="utf-8"/>
+<title>火山温泉バイオーム 食物網</title>
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<style>
     body { margin: 0; font-family: sans-serif; }
     #toolbar { padding: 10px; background: #eee; }
     #cy { width: 100vw; height: calc(100vh - 50px); }
@@ -20,16 +21,51 @@
       font-size: 14px;
       display: none;
     }
-  </style>
+  
+  .node-icon {
+    background-color: red;
+    background-image: none;
+    background-fit: cover;
+    background-clip: content-box;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+</style>
+
+<svg style="display: none;">
+<symbol id="icon-nematode" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="currentColor" r="40"></circle>
+</symbol>
+<symbol id="icon-protozoa" viewbox="0 0 100 100">
+<ellipse cx="50" cy="50" fill="currentColor" rx="30" ry="40"></ellipse>
+</symbol>
+<symbol id="icon-cladocera" viewbox="0 0 100 100">
+<rect fill="currentColor" height="40" width="40" x="30" y="30"></rect>
+</symbol>
+<symbol id="icon-coccus" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="currentColor" r="30"></circle>
+</symbol>
+<symbol id="icon-yeast" viewbox="0 0 100 100">
+<circle cx="40" cy="50" fill="currentColor" r="20"></circle>
+<circle cx="60" cy="50" fill="currentColor" r="20"></circle>
+</symbol>
+<symbol id="icon-detritus" viewbox="0 0 100 100">
+<circle cx="30" cy="30" fill="currentColor" r="5"></circle>
+<circle cx="70" cy="70" fill="currentColor" r="5"></circle>
+<circle cx="50" cy="50" fill="currentColor" r="5"></circle>
+</symbol>
+<symbol id="icon-algae" viewbox="0 0 100 100">
+<path d="M50,90 Q55,60 50,30 Q45,10 50,10" fill="none" stroke="currentColor" stroke-width="10"></path>
+</symbol>
+</svg>
 </head>
 <body>
-  <div id="toolbar">
-    <label><input type="checkbox" id="toggleLabel"> 和名表示</label>
-  </div>
-  <div id="cy"></div>
-  <div class="info-box" id="infoBox"></div>
-
-  <script>
+<div id="toolbar">
+<label><input id="toggleLabel" type="checkbox"/> 和名表示</label>
+</div>
+<div id="cy"></div>
+<div class="info-box" id="infoBox"></div>
+<script>
     const speciesInfo = {
       "Thermophilic Nematoda": {
         label_ja: "高温性線虫",
@@ -70,7 +106,28 @@
                 'label': 'data(label)',
                 'text-valign': 'center',
                 'color': '#000',
-                'background-color': '#ddd',
+                
+              'background-opacity': 0,
+              'background-width': 40,
+              'background-height': 40,
+              'background-image': function(ele) {
+                const iconMap = {
+                  'Thermophilic Nematoda': '#icon-nematode',
+                  'Naegleria fowleri': '#icon-protozoa',
+                  'Acanthamoeba castellanii': '#icon-protozoa',
+                  'Bodo thermophilus': '#icon-protozoa',
+                  'Rotaria rotatoria': '#icon-cladocera',
+                  'Thermocyclops crassus': '#icon-protozoa',
+                  'Protozoa': '#icon-protozoa',
+                  'Bacteria spp.': '#icon-coccus',
+                  'Yeast-like cells': '#icon-yeast',
+                  'Detritus': '#icon-detritus',
+                  'Algae debris': '#icon-algae'
+                };
+                return `url(${iconMap[ele.id()]})`;
+              },
+              'background-color': 'red',
+
                 'width': 40,
                 'height': 40,
                 'font-size': 10
