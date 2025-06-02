@@ -170,7 +170,8 @@
     "data": {
       "id": "Polypedilum nubifer",
       "label": "Polypedilum nubifer",
-      "group": "insect"
+      "group": "insect",
+      "icon": "icon-bacillus"
     }
   },
   {
