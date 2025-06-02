@@ -1,0 +1,169 @@
+[
+  {
+    "data": {
+      "id": "Thermophilic Nematoda",
+      "label": "Thermophilic Nematoda",
+      "group": "invertebrate"
+    }
+  },
+  {
+    "data": {
+      "id": "Naegleria fowleri",
+      "label": "Naegleria fowleri",
+      "group": "protozoa"
+    }
+  },
+  {
+    "data": {
+      "id": "Acanthamoeba castellanii",
+      "label": "Acanthamoeba castellanii",
+      "group": "protozoa"
+    }
+  },
+  {
+    "data": {
+      "id": "Bodo thermophilus",
+      "label": "Bodo thermophilus",
+      "group": "protozoa"
+    }
+  },
+  {
+    "data": {
+      "id": "Rotaria rotatoria",
+      "label": "Rotaria rotatoria",
+      "group": "invertebrate"
+    }
+  },
+  {
+    "data": {
+      "id": "Thermocyclops crassus",
+      "label": "Thermocyclops crassus",
+      "group": "protozoa"
+    }
+  },
+  {
+    "data": {
+      "id": "Protozoa",
+      "label": "Protozoa",
+      "group": "protozoa"
+    }
+  },
+  {
+    "data": {
+      "id": "Bacteria spp.",
+      "label": "Bacteria spp.",
+      "group": "bacteria"
+    }
+  },
+  {
+    "data": {
+      "id": "Yeast-like cells",
+      "label": "Yeast-like cells",
+      "group": "fungus"
+    }
+  },
+  {
+    "data": {
+      "id": "Detritus",
+      "label": "Detritus",
+      "group": "detritus"
+    }
+  },
+  {
+    "data": {
+      "id": "Algae debris",
+      "label": "Algae debris",
+      "group": "plant"
+    }
+  },
+  {
+    "data": {
+      "source": "Thermophilic Nematoda",
+      "target": "Naegleria fowleri"
+    }
+  },
+  {
+    "data": {
+      "source": "Thermophilic Nematoda",
+      "target": "Acanthamoeba castellanii"
+    }
+  },
+  {
+    "data": {
+      "source": "Naegleria fowleri",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Acanthamoeba castellanii",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Bodo thermophilus",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Rotaria rotatoria",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Thermocyclops crassus",
+      "target": "Protozoa"
+    }
+  },
+  {
+    "data": {
+      "source": "Yeast-like cells",
+      "target": "Detritus"
+    }
+  },
+  {
+    "data": {
+      "source": "Protozoa",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Algae debris",
+      "target": "Detritus"
+    }
+  },
+  {
+    "data": {
+      "source": "Rotaria rotatoria",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Thermocyclops crassus",
+      "target": "Protozoa"
+    }
+  },
+  {
+    "data": {
+      "source": "Yeast-like cells",
+      "target": "Detritus"
+    }
+  },
+  {
+    "data": {
+      "source": "Protozoa",
+      "target": "Bacteria spp."
+    }
+  },
+  {
+    "data": {
+      "source": "Algae debris",
+      "target": "Detritus"
+    }
+  }
+]
