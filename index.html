@@ -5,22 +5,27 @@
 <title>火山温泉バイオーム 食物網</title>
 <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
 <style>
-    body { margin: 0; font-family: sans-serif; }
-    #toolbar { padding: 10px; background: #eee; }
-    #cy { width: 100vw; height: calc(100vh - 50px); }
-    .info-box {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      padding: 10px;
-      border-top: 1px solid #ccc;
-      font-size: 14px;
-      display: none;
-    }
+  body { margin: 0; font-family: sans-serif; }
+  #toolbar { padding: 10px; background: #eee; }
+  #cy { width: 100vw; height: calc(100vh - 50px); position: relative; }
+  #overlay-icons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+  .info-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    font-size: 14px;
+    display: none;
+  }
 </style>
-
 <svg style="display: none;">
   <symbol id="icon-nematode" viewBox="0 0 100 100">
     <circle cx="50" cy="50" r="40" fill="red"/>
@@ -48,12 +53,12 @@
   </symbol>
 </svg>
 </head>
-
 <body>
 <div id="toolbar">
   <label><input id="toggleLabel" type="checkbox"/> 和名表示</label>
 </div>
 <div id="cy"></div>
+<div id="overlay-icons"></div>
 <div class="info-box" id="infoBox"></div>
 <script>
   const speciesInfo = {
@@ -83,6 +88,38 @@
     }
   };
 
+  function placeIcons(cy) {
+    const overlay = document.getElementById('overlay-icons');
+    overlay.innerHTML = '';
+    const iconMap = {
+      'Thermophilic Nematoda': 'icon-nematode',
+      'Naegleria fowleri': 'icon-protozoa',
+      'Acanthamoeba castellanii': 'icon-protozoa',
+      'Bodo thermophilus': 'icon-protozoa',
+      'Rotaria rotatoria': 'icon-cladocera',
+      'Thermocyclops crassus': 'icon-protozoa',
+      'Protozoa': 'icon-protozoa',
+      'Bacteria spp.': 'icon-coccus',
+      'Yeast-like cells': 'icon-yeast',
+      'Detritus': 'icon-detritus',
+      'Algae debris': 'icon-algae'
+    };
+    cy.nodes().forEach(node => {
+      const pos = node.renderedPosition();
+      const id = node.id();
+      const iconId = iconMap[id];
+      if (!iconId) return;
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("width", 40);
+      svg.setAttribute("height", 40);
+      svg.setAttribute("style", "position:absolute; left:" + (pos.x - 20) + "px; top:" + (pos.y - 20) + "px;");
+      const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+      use.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#" + iconId);
+      svg.appendChild(use);
+      overlay.appendChild(svg);
+    });
+  }
+
   fetch("volcanic_hotspring_foodweb.json")
     .then(res => res.json())
     .then(elements => {
@@ -96,25 +133,7 @@
               'label': 'data(label)',
               'text-valign': 'center',
               'color': '#000',
-              'background-image': function(ele) {
-                const iconMap = {
-                  'Thermophilic Nematoda': 'url(#icon-nematode)',
-                  'Naegleria fowleri': 'url(#icon-protozoa)',
-                  'Acanthamoeba castellanii': 'url(#icon-protozoa)',
-                  'Bodo thermophilus': 'url(#icon-protozoa)',
-                  'Rotaria rotatoria': 'url(#icon-cladocera)',
-                  'Thermocyclops crassus': 'url(#icon-protozoa)',
-                  'Protozoa': 'url(#icon-protozoa)',
-                  'Bacteria spp.': 'url(#icon-coccus)',
-                  'Yeast-like cells': 'url(#icon-yeast)',
-                  'Detritus': 'url(#icon-detritus)',
-                  'Algae debris': 'url(#icon-algae)'
-                };
-                return iconMap[ele.id()] || null;
-              },
-              'background-opacity': 0,
-              'background-width': 40,
-              'background-height': 40,
+              'background-color': '#fff',
               'width': 40,
               'height': 40,
               'font-size': 10
@@ -143,6 +162,9 @@
           }
         });
       });
+
+      cy.on('render zoom pan', () => placeIcons(cy));
+      placeIcons(cy);
 
       cy.on('tap', 'node', evt => {
         const node = evt.target;
